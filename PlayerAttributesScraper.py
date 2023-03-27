@@ -40,5 +40,5 @@ class PlayerAttributesScraper:
 
         df = pd.DataFrame(formatted_list, columns=['Player'])
         df = df.iloc[:-4] # last 4 rows are not relevant 'best suitable roles'
-        df.insert(0, "Player Info", player_info)
+        df.insert(0, "Player Info", player_info) #need to get overall and potential
         print(df)
