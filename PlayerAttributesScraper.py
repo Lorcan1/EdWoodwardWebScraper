@@ -38,7 +38,31 @@ class PlayerAttributesScraper:
 
         player_info = ['Club','Name', 'Age','Position','Foot','Height','Weight', 'Caps/ Goals', 'Unique ID','Sell Value','Wages', 'Contract End']
 
-        df = pd.DataFrame(formatted_list, columns=['Player'])
-        df = df.iloc[:-4] # last 4 rows are not relevant 'best suitable roles'
-        df.insert(0, "Player Info", player_info) #need to get overall and potential
-        print(df)
+        player_info_df = pd.DataFrame([player_info])
+        player_info_df.columns = player_info_df.iloc[0]
+        player_info_df = player_info_df.drop(player_info_df.index[0])
+        formatted_list = formatted_list[:len(formatted_list) - 4]
+        player_info_df.loc[0] = formatted_list
+        print(player_info_df)
+        tables = soup.findChildren('table')
+        stat_names = []
+        stats = []
+        for table in tables:
+            rows = table.findChildren(['th', 'tr'])
+            for row in rows:
+                stat_names_regex = re.search('id="(.*)">', str(row))
+                stat_regex = re.search('value_(.*)">', str(row))
+                stat_names.append(stat_names_regex.group(1))
+                stats.append(stat_regex.group(1))
+        d = pd.DataFrame([stat_names])
+        d.columns = d.iloc[0]
+        d = d.drop(d.index[0])
+        d.loc[0] = stats
+        d = pd.concat([player_info_df,d], axis=1)
+        d.head()
+        # rename d, seperate out pandaframe header from rest as this doesnt
+        # need to be scraped every time, split into functions
+
+
+
+
