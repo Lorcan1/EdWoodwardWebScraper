@@ -23,12 +23,16 @@ class PlayerAttributesScraper:
                 personal_info_stats.extend(attribute_info_stats)
                 players.loc[len(players)] = personal_info_stats
                 players.head()
+        return players
 
     def url_creator(self,name): #to be completed
-        if name == 1:
-            return "https://fminside.net/players/2-fm-22/85085378-aymeric-laporte"
-        else:
-            return "https://fminside.net/players/2-fm-22/55070299-ruben-dias"
+        return name
+        # if name == 1:
+        #     return "https://fminside.net/players/3-fm-23/55070299-ruben-dias"
+        # elif name == 2:
+        #     return "https://fminside.net/players/3-fm-23/55057659-ederson"
+        # # else:
+        #     return "https://fminside.net/players/2-fm-22/55070299-ruben-dias"
 
     def soup_creator(self,url):
         headers = {'User-Agent':
@@ -70,7 +74,6 @@ class PlayerAttributesScraper:
             personal_info_df.columns = personal_info_df.iloc[0]
             player_info_df = personal_info_df.drop(personal_info_df.index[0])
             player_info_df.loc[0] = formatted_list
-            print(player_info_df)
             return player_info_df
         else:
             return formatted_list
