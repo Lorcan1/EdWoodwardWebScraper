@@ -1,5 +1,5 @@
 from PlayerAttributesScraper import PlayerAttributesScraper
-from PlayerNameScraper import PlayerNameScraper
+from OldPlayerNameScraper import PlayerNameScraper
 
 def fetch_hardcoded_outfield_player_list():
     return ["https://fminside.net/players/3-fm-23/28009441-kyle-walker",
