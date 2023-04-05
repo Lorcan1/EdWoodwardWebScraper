@@ -30,7 +30,7 @@ if __name__ == '__main__':
     outfield_player_list = fetch_hardcoded_outfield_player_list()
     goalkeeper_list = fetch_harcoded_goalkeeper_list()
 
-
+    #problem with gundogan, Stefan Ortega - sell value is added while contract end isnt
     player_attribute_scraper = PlayerAttributesScraper()
     outfield_player_information_df = player_attribute_scraper.player_attributes_scraper(outfield_player_list)
     goalkeeper_information_df = player_attribute_scraper.player_attributes_scraper(goalkeeper_list)

@@ -44,11 +44,13 @@ class PlayerAttributesScraper:
         original_personal_info = soup.findAll(class_="value")
         info_list = []
         for info in original_personal_info:
+            if info.i and info.i.get_text() == "Not for sale":
+                info_list.append(info.i.get_text())
             info_list.append(info.contents[0])
 
         formatted_list = []
         for i in range(0, len(info_list) - 1):  # split into seperate function
-            if isinstance(info_list[i], NavigableString):
+            if isinstance(info_list[i], NavigableString) or isinstance(info_list[i], str):
                 formatted_list.append(info_list[i])
             else:
                 if i == 2:
@@ -66,9 +68,12 @@ class PlayerAttributesScraper:
                     formatted_list.append(z)
 
         formatted_list = formatted_list[0:12]
+        overall, potential = self.return_overall_potential(soup)
+        formatted_list.append(overall)
+        formatted_list.append(potential)
         if is_first_player:
             player_info = ['Club', 'Name', 'Age', 'Position', 'Foot', 'Height', 'Weight', 'Caps/ Goals', 'Unique ID',
-                           'Sell Value', 'Wages', 'Contract End']
+                           'Sell Value', 'Wages', 'Contract End', 'Overall', 'Potential']
 
             personal_info_df = pd.DataFrame([player_info])
             personal_info_df.columns = personal_info_df.iloc[0]
@@ -98,3 +103,8 @@ class PlayerAttributesScraper:
             return attributes_info_df
         else:
             return stats
+
+    def return_overall_potential(self,soup):
+        overall = soup.select_one("span[id*=ability]").text
+        potential = soup.select_one("span[id*=potential]").text
+        return overall, potential
