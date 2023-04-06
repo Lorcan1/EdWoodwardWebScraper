@@ -17,3 +17,9 @@ class PlayerUrlScraper:
                     if '/players/3' in a['href']:
                         list_of_urls.append(a['href'])
         return list_of_urls
+
+
+
+if __name__ == '__main__':
+    p = PlayerUrlScraper()
+    p.player_url_scraper()

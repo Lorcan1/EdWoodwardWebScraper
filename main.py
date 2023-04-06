@@ -1,7 +1,8 @@
 from PlayerAttributesScraper import PlayerAttributesScraper
-from OldPlayerNameScraper import PlayerNameScraper
+from PlayerUrlScraper import PlayerUrlScraper
 
-def fetch_hardcoded_outfield_player_list():
+
+def fetch_hardcoded_all_player_list():
     return ["https://fminside.net/players/3-fm-23/28009441-kyle-walker",
             "https://fminside.net/players/3-fm-23/85085378-aymeric-laporte",
             "https://fminside.net/players/3-fm-23/55070299-ruben-dias",
@@ -11,7 +12,9 @@ def fetch_hardcoded_outfield_player_list():
             "https://fminside.net/players/3-fm-23/18004457-kevin-de-bruyne",
             "https://fminside.net/players/3-fm-23/55041632-bernardo-silva",
             "https://fminside.net/players/3-fm-23/28067800-jack-grealish",
-            "https://fminside.net/players/3-fm-23/29179241-erling-haaland"
+            "https://fminside.net/players/3-fm-23/29179241-erling-haaland",
+            "https://fminside.net/players/3-fm-23/55057659-ederson",
+            "https://fminside.net/players/3-fm-23/91100272-stefan-ortega"
             ]
 def fetch_harcoded_goalkeeper_list():
     return ["https://fminside.net/players/3-fm-23/55057659-ederson",
@@ -20,20 +23,19 @@ def fetch_harcoded_goalkeeper_list():
 
 
 if __name__ == '__main__':
-    # player_name_scraper = PlayerNameScraper()
-    # outfield_player_list, goalkeeper_list = player_name_scraper.player_name_scraper()
-    #
+
     # outfield_player_list = outfield_player_list[:1]
     # goalkeeper_list = goalkeeper_list[:1]
 
-    #scrape urls from this link https://fminside.net/clubs/3-fm-23/679-man-city eventually
-    outfield_player_list = fetch_hardcoded_outfield_player_list()
+    # player_url_scraper = PlayerUrlScraper()
+    # list_of_urls = player_url_scraper.player_url_scraper()
+
+    all_player_list = fetch_hardcoded_all_player_list()
     goalkeeper_list = fetch_harcoded_goalkeeper_list()
 
     #problem with gundogan, Stefan Ortega - sell value is added while contract end isnt
     player_attribute_scraper = PlayerAttributesScraper()
-    outfield_player_information_df = player_attribute_scraper.player_attributes_scraper(outfield_player_list)
-    goalkeeper_information_df = player_attribute_scraper.player_attributes_scraper(goalkeeper_list)
+    outfield_player_information_df, goalkeeper_information_df = player_attribute_scraper.player_attributes_scraper(all_player_list)
 
     outfield_player_information_df.to_csv(r'C:\Users\lorca\PycharmProjects\EdWoodwardScraper\outfield.csv')
     goalkeeper_information_df.to_csv(r"C:\Users\lorca\PycharmProjects\EdWoodwardScraper\goalkeeper.csv")

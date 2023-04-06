@@ -6,24 +6,36 @@ import pandas as pd
 
 class PlayerAttributesScraper:
     def player_attributes_scraper(self, names_list):
-        is_first_player = True
-        players = pd.DataFrame()
+        is_first_outfield_player = True
+        is_first_goalkeeper = True
+        outfield_players = pd.DataFrame()
+        goalkeepers = pd.DataFrame()
         for name in names_list:
             url = self.url_creator(name)
             soup = self.soup_creator(url)
-            if is_first_player:
-                personal_info_df = self.get_personal_info(soup,is_first_player)
-                attribute_info_df = self.get_attribute_info(soup,is_first_player)
-                players = pd.concat([personal_info_df, attribute_info_df], axis=1)
-                players.head()
-                is_first_player = False
+            if is_first_outfield_player or is_first_goalkeeper:
+                personal_info_df = self.get_personal_info(soup,True)
+                attribute_info_df = self.get_attribute_info(soup,True)
+                if personal_info_df['Position'].str.contains('GK').any() and is_first_goalkeeper is True:
+                    goalkeepers = pd.concat([personal_info_df, attribute_info_df], axis=1)
+                    is_first_goalkeeper = False
+                elif is_first_outfield_player:
+                    outfield_players = pd.concat([personal_info_df, attribute_info_df], axis=1)
+                    is_first_outfield_player = False
+                else:
+                    goalkeepers, outfield_players = self.append_to_df(soup,goalkeepers,outfield_players)
+
             else:
-                personal_info_stats = self.get_personal_info(soup,is_first_player)
-                attribute_info_stats = self.get_attribute_info(soup,is_first_player)
-                personal_info_stats.extend(attribute_info_stats)
-                players.loc[len(players)] = personal_info_stats
-                players.head()
-        return players
+                goalkeepers, outfield_players = self.append_to_df(soup, goalkeepers, outfield_players)
+                # personal_info_stats = self.get_personal_info(soup,True)
+                # attribute_info_stats = self.get_attribute_info(soup,True)
+                # personal_info_stats.extend(attribute_info_stats)
+                # if 'GK' in personal_info_stats:
+                #     goalkeepers.loc[len(goalkeepers)] = personal_info_stats
+                # else:
+                #     outfield_players.loc[len(outfield_players)] = personal_info_stats
+
+        return goalkeepers,outfield_players
 
     def url_creator(self,name): #to be completed
         return name
@@ -108,3 +120,14 @@ class PlayerAttributesScraper:
         overall = soup.select_one("span[id*=ability]").text
         potential = soup.select_one("span[id*=potential]").text
         return overall, potential
+
+    def append_to_df(self,soup,goalkeepers,outfield_players):
+        personal_info_stats = self.get_personal_info(soup, False)
+        attribute_info_stats = self.get_attribute_info(soup, False)
+        personal_info_stats.extend(attribute_info_stats)
+        if 'GK' in personal_info_stats:
+            goalkeepers.loc[len(goalkeepers)] = personal_info_stats
+        else:
+            outfield_players.loc[len(outfield_players)] = personal_info_stats
+        return goalkeepers,outfield_players
+
