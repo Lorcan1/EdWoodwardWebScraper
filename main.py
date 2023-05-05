@@ -1,5 +1,6 @@
 from PlayerAttributesScraper import PlayerAttributesScraper
 from PlayerUrlScraper import PlayerUrlScraper
+from PlayersCleaner import PlayersCleaner
 
 
 def fetch_hardcoded_all_player_list():
@@ -37,5 +38,11 @@ if __name__ == '__main__':
     player_attribute_scraper = PlayerAttributesScraper()
     outfield_player_information_df, goalkeeper_information_df = player_attribute_scraper.player_attributes_scraper(all_player_list)
 
-    outfield_player_information_df.to_csv(r'C:\Users\lorca\PycharmProjects\EdWoodwardScraper\outfield.csv')
-    goalkeeper_information_df.to_csv(r"C:\Users\lorca\PycharmProjects\EdWoodwardScraper\goalkeeper.csv")
+    players_cleaner = PlayersCleaner()
+    outfield_player_information_df = players_cleaner.clean(outfield_player_information_df)
+    goalkeeper_information_df = players_cleaner.clean(goalkeeper_information_df)
+
+
+
+    outfield_player_information_df.to_csv(r'C:\Users\lorca\PycharmProjects\EdWoodwardScraper\outfield.csv',index=False)
+    goalkeeper_information_df.to_csv(r"C:\Users\lorca\PycharmProjects\EdWoodwardScraper\goalkeeper.csv",index=False)

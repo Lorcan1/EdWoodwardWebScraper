@@ -27,7 +27,7 @@ class PlayersCleaner:
         dataframe['Wages'] = dataframe['Wages'].str.replace('€', '')
         dataframe['Wages'] = dataframe['Wages'].str.replace('pw', '')
 
-        print(dataframe)
+        return dataframe
 
     def name_cleaner(self, dataframe):
         # dataframe['First Name'] = dataframe['Name'].map(lambda x: x.split(' ')[0].strip())
@@ -69,8 +69,8 @@ class PlayersCleaner:
 
         return dataframe
 
-if __name__ == '__main__':
-    playercleaner = PlayersCleaner()
-
-    dataframe = read_csv("outfield.csv")
-    playercleaner.clean(dataframe)
+# if __name__ == '__main__':
+#     playercleaner = PlayersCleaner()
+#
+#     dataframe = read_csv("outfield.csv")
+#     playercleaner.clean(dataframe)

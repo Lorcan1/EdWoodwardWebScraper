@@ -35,7 +35,7 @@ class PlayerAttributesScraper:
                 # else:
                 #     outfield_players.loc[len(outfield_players)] = personal_info_stats
 
-        return goalkeepers,outfield_players
+        return outfield_players,goalkeepers
 
     def url_creator(self,name): #to be completed
         return name
