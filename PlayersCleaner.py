@@ -9,7 +9,7 @@ class PlayersCleaner:
         dataframe['Int Caps'] = dataframe['Caps/ Goals'].map(lambda x: x.split('/')[0])
         dataframe['Int Goals'] = dataframe['Caps/ Goals'].map(lambda x: x.split('/')[1])
 
-        dataframe = dataframe.iloc[:, 1:]
+        #dataframe = dataframe.iloc[:, 1:]
         col = dataframe.pop("Unique ID")
         dataframe.insert(0, col.name, col)
 

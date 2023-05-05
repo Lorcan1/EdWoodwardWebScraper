@@ -79,12 +79,16 @@ class PlayerAttributesScraper:
                     z = y[2]
                     formatted_list.append(z)
 
-        formatted_list = formatted_list[0:12]
+        formatted_list = formatted_list[1:12]
         overall, potential = self.return_overall_potential(soup)
         formatted_list.append(overall)
         formatted_list.append(potential)
+        country = self.get_country(soup)
+        club = self.get_club(soup)
+        formatted_list.insert(1,club)
+        formatted_list.insert(2,country)
         if is_first_player:
-            player_info = ['Club', 'Name', 'Age', 'Position', 'Foot', 'Height', 'Weight', 'Caps/ Goals', 'Unique ID',
+            player_info = ['Name', 'Club', 'Country', 'Age', 'Position', 'Foot', 'Height', 'Weight', 'Caps/ Goals', 'Unique ID',
                            'Sell Value', 'Wages', 'Contract End', 'Overall', 'Potential']
 
             personal_info_df = pd.DataFrame([player_info])
@@ -120,6 +124,19 @@ class PlayerAttributesScraper:
         overall = soup.select_one("span[id*=ability]").text
         potential = soup.select_one("span[id*=potential]").text
         return overall, potential
+
+    def get_country(self,soup):
+        tag = soup.find('img', class_='flag')
+        tag = tag.parent
+        return tag.text
+
+    def get_club(self,soup):
+        tag = soup.find("span", {"class": "logo"})
+        return tag.next.text
+
+
+
+
 
     def append_to_df(self,soup,goalkeepers,outfield_players):
         personal_info_stats = self.get_personal_info(soup, False)
