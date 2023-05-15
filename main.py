@@ -15,11 +15,24 @@ def fetch_hardcoded_all_player_list():
             "https://fminside.net/players/3-fm-23/28067800-jack-grealish",
             "https://fminside.net/players/3-fm-23/29179241-erling-haaland",
             "https://fminside.net/players/3-fm-23/55057659-ederson",
-            "https://fminside.net/players/3-fm-23/91100272-stefan-ortega"
+            "https://fminside.net/players/3-fm-23/91100272-stefan-ortega",
+
+            "https://fminside.net/players/3-fm-23/67268221-pedro-porro",
+            "https://fminside.net/players/3-fm-23/14130029-cristian-romero",
+            "https://fminside.net/players/3-fm-23/55032265-eric-dier",
+            "https://fminside.net/players/3-fm-23/28049754-ben-davies",
+            "https://fminside.net/players/3-fm-23/14094572-rodrigo-bentancur",
+            "https://fminside.net/players/3-fm-23/13174979-yves-bissouma",
+            "https://fminside.net/players/3-fm-23/43295814-dejan-kulusevski",
+            "https://fminside.net/players/3-fm-23/19073564-lucas-moura",
+            "https://fminside.net/players/3-fm-23/92020288-heung-min-son",
+            "https://fminside.net/players/3-fm-23/28049320-harry-kane",
+            "https://fminside.net/players/3-fm-23/8428653-hugo-lloris"
             ]
 def fetch_harcoded_goalkeeper_list():
     return ["https://fminside.net/players/3-fm-23/55057659-ederson",
-            "https://fminside.net/players/3-fm-23/91100272-stefan-ortega"
+            "https://fminside.net/players/3-fm-23/91100272-stefan-ortega",
+            "https://fminside.net/players/3-fm-23/8428653-hugo-lloris",
             ]
 
 

@@ -6,24 +6,24 @@ class PlayersCleaner:
         dataframe = self.name_cleaner(dataframe)
         dataframe['Height'] = dataframe['Height'].map(lambda x: x.split('CM')[0].strip())
         dataframe['Weight'] = dataframe['Weight'].map(lambda x: x.split('KG')[0].strip())
-        dataframe['Int Caps'] = dataframe['Caps/ Goals'].map(lambda x: x.split('/')[0])
-        dataframe['Int Goals'] = dataframe['Caps/ Goals'].map(lambda x: x.split('/')[1])
+        dataframe['int_caps'] = dataframe['Caps/ Goals'].map(lambda x: x.split('/')[0])
+        dataframe['int_goals'] = dataframe['Caps/ Goals'].map(lambda x: x.split('/')[1])
 
         #dataframe = dataframe.iloc[:, 1:]
         col = dataframe.pop("Unique ID")
         dataframe.insert(0, col.name, col)
 
-        col = dataframe.pop("Int Caps")
+        col = dataframe.pop("int_caps")
         dataframe.insert(dataframe.columns.get_loc("Caps/ Goals") + 1, col.name, col)
 
 
-        col = dataframe.pop("Int Goals")
+        col = dataframe.pop("int_goals")
         dataframe.insert(dataframe.columns.get_loc("Caps/ Goals") + 2, col.name, col)
 
         dataframe = dataframe.drop("Caps/ Goals", axis=1)
 
-        dataframe['Sell Value'] = dataframe['Sell Value'].str.replace('Not for sale', '-100')
-        dataframe['Sell Value'] = dataframe['Sell Value'].str.replace('€', '')
+        dataframe['sell_value'] = dataframe['sell_value'].str.replace('Not for sale', '-100')
+        dataframe['sell_value'] = dataframe['sell_value'].str.replace('€', '')
         dataframe['Wages'] = dataframe['Wages'].str.replace('€', '')
         dataframe['Wages'] = dataframe['Wages'].str.replace('pw', '')
 
@@ -57,12 +57,12 @@ class PlayersCleaner:
                     first_name.append(name[1])
                     second_name.append(name[2])
 
-        dataframe['First Name'] = first_name
-        col = dataframe.pop("First Name")
+        dataframe['first_name'] = first_name
+        col = dataframe.pop("first_name")
         dataframe.insert(dataframe.columns.get_loc("Name") + 1, col.name, col)
 
-        dataframe['Second Name'] = second_name
-        col = dataframe.pop("Second Name")
+        dataframe['second_name'] = second_name
+        col = dataframe.pop("second_name")
         dataframe.insert(dataframe.columns.get_loc("Name") + 2, col.name, col)
 
         dataframe = dataframe.drop("Name", axis=1)

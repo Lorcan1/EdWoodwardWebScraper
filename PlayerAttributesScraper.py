@@ -85,13 +85,19 @@ class PlayerAttributesScraper:
         formatted_list.append(potential)
         country = self.get_country(soup)
         club = self.get_club(soup)
-        image_url = self.get_image_url(soup)
+        image_url = self.get_url(soup.find('span', {'class': 'image'}))
+        club_url = self.get_url(soup.find('span', {'class': 'logo'}))
+        country_url =self.get_country_url(soup.find('img', {'class':'flag'}))
         formatted_list.insert(1,club)
         formatted_list.insert(2,country)
         formatted_list.insert(len(formatted_list),image_url)
+        formatted_list.insert(len(formatted_list), club_url)
+        formatted_list.insert(len(formatted_list), country_url)
+
         if is_first_player:
             player_info = ['Name', 'Club', 'Country', 'Age', 'Position', 'Foot', 'Height', 'Weight', 'Caps/ Goals', 'Unique ID',
-                           'Sell Value', 'Wages', 'Contract End', 'Overall', 'Potential', 'Image Url']
+                           'sell_value', 'Wages', 'contract_end', 'Overall', 'Potential', 'image_url', 'club_url','country_url']
+
 
             personal_info_df = pd.DataFrame([player_info])
             personal_info_df.columns = personal_info_df.iloc[0]
@@ -136,12 +142,15 @@ class PlayerAttributesScraper:
         tag = soup.find("span", {"class": "logo"})
         return tag.next.text
 
-    def get_image_url(self,soup):
-        span_tag = soup.find('span', {'class': 'image'})
+    def get_url(self,span_tag):
+        # span_tag = soup.find('span', {'class': 'image'})
         style = span_tag['style']
         url = style.split('url(')[1].split(')')[0]
         return 'https:' + url[1:]
 
+    def get_country_url(self,tag):
+        url = tag['src']
+        return 'https:' + url[1:]
 
 
 
