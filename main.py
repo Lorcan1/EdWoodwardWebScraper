@@ -7,7 +7,7 @@ def fetch_hardcoded_all_player_list():
     return ["https://fminside.net/players/3-fm-23/28009441-kyle-walker",
             "https://fminside.net/players/3-fm-23/85085378-aymeric-laporte",
             "https://fminside.net/players/3-fm-23/55070299-ruben-dias",
-            "https://fminside.net/players/3-fm-23/55041623-joao-cancelo",
+            "https://fminside.net/players/3-fm-23/37025551-nathan-ake",
             "https://fminside.net/players/3-fm-23/67217524-rodri",
             "https://fminside.net/players/3-fm-23/91003875-lkay-gundogan",
             "https://fminside.net/players/3-fm-23/18004457-kevin-de-bruyne",

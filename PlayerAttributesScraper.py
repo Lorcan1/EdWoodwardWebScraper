@@ -2,6 +2,7 @@ import re
 import requests
 from bs4 import BeautifulSoup, NavigableString, Tag
 import pandas as pd
+import json
 
 
 class PlayerAttributesScraper:
@@ -16,7 +17,7 @@ class PlayerAttributesScraper:
             if is_first_outfield_player or is_first_goalkeeper:
                 personal_info_df = self.get_personal_info(soup,True)
                 attribute_info_df = self.get_attribute_info(soup,True)
-                if personal_info_df['Position'].str.contains('GK').any() and is_first_goalkeeper is True:
+                if personal_info_df['position_natural'].str.contains('GK').any() and is_first_goalkeeper is True:
                     goalkeepers = pd.concat([personal_info_df, attribute_info_df], axis=1)
                     is_first_goalkeeper = False
                 elif is_first_outfield_player:
@@ -62,6 +63,7 @@ class PlayerAttributesScraper:
 
         formatted_list = []
         for i in range(0, len(info_list) - 1):  # split into seperate function
+            x = info_list[i]
             if isinstance(info_list[i], NavigableString) or isinstance(info_list[i], str):
                 formatted_list.append(info_list[i])
             else:
@@ -74,12 +76,23 @@ class PlayerAttributesScraper:
                     except AttributeError:
                         pass
                 if i == 5:
-                    x = re.split("</span>", str(info_list[i]))
-                    y = re.split('">', x[0])
-                    z = y[2]
-                    formatted_list.append(z)
+                    # x = re.split("</span>", str(info_list[i]))
+                    # y = re.split('">', x[0])
+                    # z = y[2]
+                    # formatted_list.append(z)
+                    position_natural_span = soup.findAll('span', class_='position natural')
+                    position_natural_text_list = [x.text for x in position_natural_span]
+                    removed_duplicates = list(dict.fromkeys(position_natural_text_list) )
+                    formatted_position_natural_text_list = json.dumps(removed_duplicates)
+                    formatted_list.append(formatted_position_natural_text_list)
+                    position_decent_span = soup.findAll('span', {'class' : 'position decent'})
+                    # position_decent = position_decent_span.
+                    position_decent_text_list = [x.text for x in position_decent_span]
+                    formatted_position_decent_text_list  = json.dumps(position_decent_text_list)
+                    formatted_list.append(formatted_position_decent_text_list)
 
-        formatted_list = formatted_list[1:12]
+
+        formatted_list = formatted_list[1:13]
         overall, potential = self.return_overall_potential(soup)
         formatted_list.append(overall)
         formatted_list.append(potential)
@@ -95,7 +108,7 @@ class PlayerAttributesScraper:
         formatted_list.insert(len(formatted_list), country_url)
 
         if is_first_player:
-            player_info = ['Name', 'Club', 'Country', 'Age', 'Position', 'Foot', 'Height', 'Weight', 'Caps/ Goals', 'Unique ID',
+            player_info = ['Name', 'Club', 'Country', 'Age', 'position_natural', 'position_accomplished',  'Foot', 'Height', 'Weight', 'Caps/ Goals', 'Unique ID',
                            'sell_value', 'Wages', 'contract_end', 'Overall', 'Potential', 'image_url', 'club_url','country_url']
 
 
@@ -158,7 +171,7 @@ class PlayerAttributesScraper:
         personal_info_stats = self.get_personal_info(soup, False)
         attribute_info_stats = self.get_attribute_info(soup, False)
         personal_info_stats.extend(attribute_info_stats)
-        if 'GK' in personal_info_stats:
+        if "[\"GK\"]" in personal_info_stats:
             goalkeepers.loc[len(goalkeepers)] = personal_info_stats
         else:
             outfield_players.loc[len(outfield_players)] = personal_info_stats
